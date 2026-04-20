@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You - Anggelicious Chix</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="images/logo.png" alt="Anggelicious Chix Logo" class="logo">
+            <div class="business-info">
+                <h1>Anggelicious Chix</h1>
+                <p>Don't be a chicken, taste the chix.</p>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="products.html">PRODUCTS</a></li>
+                <li><a href="cart.html" class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cart-count">0</span>
+                </a></li>
+                <li><a href="orders.html">ORDERS</a></li>
+                <li><a href="login.html" id="auth-link" class="auth-btn">MEMBER LOGIN</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="auth-container" style="text-align: center; max-width: 600px;">
+            <i class="fas fa-check-circle" style="font-size: 4rem; color: green; margin-bottom: 1.5rem;"></i>
+            <h2 style="margin-bottom: 1rem;">Thank You for Your Order!</h2>
+            <p style="margin-bottom: 2rem;">We've received your order and we're starting to cook your delicious chicken. You'll receive a notification when it's ready!</p>
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <a href="orders.html" class="cta-btn">View Order History</a>
+                <a href="index.html" class="cta-btn" style="background: var(--dark-brown); color: white;">Back to Home</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-info">
+            <p><strong>Anggelicious Chix</strong></p>
+            <p>Email: <a href="mailto:rangge716@gmail.com" style="color: white;">rangge716@gmail.com</a></p>
+            <p>&copy; 2026 Anggelicious Chix. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div id="notification"></div>
+
+    <script src="cart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            updateAuthLink();
+            updateCartCount();
+            showNotification('Order placed successfully! Thank you.');
+        });
+    </script>
+</body>
+</html>

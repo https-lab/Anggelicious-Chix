@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Login - Anggelicious Chix</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="images/logo.png" alt="Anggelicious Chix Logo" class="logo">
+            <div class="business-info">
+                <h1>Anggelicious Chix</h1>
+                <p>Don't be a chicken, taste the chix.</p>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="products.html">PRODUCTS</a></li>
+                <li><a href="cart.html" class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cart-count">0</span>
+                </a></li>
+                <li><a href="orders.html">ORDERS</a></li>
+                <li><a href="login.html" id="auth-link" class="auth-btn">MEMBER LOGIN</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="auth-container">
+            <h2 style="text-align: center; margin-bottom: 2rem;">Member Login</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" required placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required placeholder="Enter your password">
+                </div>
+                <button type="submit" class="submit-btn">LOGIN</button>
+            </form>
+            <p style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem;">
+                Don't have an account? <a href="#" style="color: var(--dark-brown);">Sign up</a>
+            </p>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-info">
+            <p><strong>Anggelicious Chix</strong></p>
+            <p>Email: <a href="mailto:rangge716@gmail.com" style="color: white;">rangge716@gmail.com</a></p>
+            <p>&copy; 2026 Anggelicious Chix. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div id="notification"></div>
+
+    <script src="cart.js"></script>
+    <script>
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Simple mock login
+            const email = document.getElementById('email').value;
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', email);
+            
+            showNotification('Login successful! Welcome back.');
+            
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1500);
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateAuthLink();
+            updateCartCount();
+        });
+    </script>
+</body>
+</html>

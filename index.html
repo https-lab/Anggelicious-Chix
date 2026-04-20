@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anggelicious Chix - Home</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="images/logo.png" alt="Anggelicious Chix Logo" class="logo">
+            <div class="business-info">
+                <h1>Anggelicious Chix</h1>
+                <p>Don't be a chicken, taste the chix.</p>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="products.html">PRODUCTS</a></li>
+                <li><a href="cart.html" class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cart-count">0</span>
+                </a></li>
+                <li><a href="orders.html">ORDERS</a></li>
+                <li><a href="login.html" id="auth-link" class="auth-btn">MEMBER LOGIN</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h2>Deliciously Fried to Perfection</h2>
+            <p>Experience the crunchiest fried chicken in town.</p>
+            <a href="products.html" class="cta-btn">Order Now</a>
+        </section>
+
+        <section class="products-container">
+            <h2 class="section-title">Featured Products</h2>
+            <div class="products-grid" id="featured-products">
+                <!-- Products will be loaded here via JS -->
+            </div>
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="products.html" class="cta-btn">View All Products</a>
+            </div>
+        </section>
+
+        <section class="about-section">
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1516684732162-798a0062be99?w=800&q=80" alt="Cooking Fried Chicken">
+            </div>
+            <div class="about-content">
+                <h2 style="font-size: 2.5rem; margin-bottom: 1.5rem;">Our Story</h2>
+                <p style="margin-bottom: 1rem;">At Anggelicious Chix, we believe that great fried chicken starts with passion and the finest ingredients. Our journey began with a simple goal: to create the crunchiest, most flavorful fried chicken that makes you want more.</p>
+                <p>Every piece of our chicken is marinated in our secret blend of spices and fried to golden perfection. We take pride in serving "Heavenly Homemade" goodness to our community.</p>
+            </div>
+        </section>
+
+        <section class="features">
+            <h2 class="section-title">Why Anggelicious?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-drumstick-bite"></i>
+                    <h3>Always Fresh</h3>
+                    <p>We only use fresh, never-frozen chicken delivered daily.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-pepper-hot"></i>
+                    <h3>Secret Spices</h3>
+                    <p>Our unique blend of 12 secret herbs and spices gives that signature kick.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-clock"></i>
+                    <h3>Fast Delivery</h3>
+                    <p>Get your chicken hot and crispy right at your doorstep.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="testimonials">
+            <h2 class="section-title">What Our Chix Say</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <p>"The crunchiest chicken I've ever had! The Garlic Parmesan is to die for. Highly recommended!"</p>
+                    <h4 style="margin-top: 1rem;">- Maria S.</h4>
+                </div>
+                <div class="testimonial-card">
+                    <p>"Anggelicious Chix never disappoints. Their spicy wings have the perfect level of heat. Best in town!"</p>
+                    <h4 style="margin-top: 1rem;">- John D.</h4>
+                </div>
+                <div class="testimonial-card">
+                    <p>"Heavenly homemade indeed! My kids love the chicken nuggets. It's our go-to family dinner."</p>
+                    <h4 style="margin-top: 1rem;">- Sarah L.</h4>
+                </div>
+            </div>
+        </section>
+
+        <section class="newsletter">
+            <h2>Join the Chix Club</h2>
+            <p>Subscribe to get exclusive offers and new flavor alerts!</p>
+            <form class="newsletter-form" id="newsletter-form">
+                <input type="email" placeholder="Your Email Address" required>
+                <button type="submit">SUBSCRIBE</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-info">
+            <p><strong>Anggelicious Chix</strong></p>
+            <p>Email: <a href="mailto:rangge716@gmail.com" style="color: white;">rangge716@gmail.com</a></p>
+            <p>&copy; 2026 Anggelicious Chix. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div id="notification"></div>
+
+    <script src="cart.js"></script>
+    <script>
+        // Load featured products on home page
+        document.addEventListener('DOMContentLoaded', () => {
+            const featuredGrid = document.getElementById('featured-products');
+            const featured = products.slice(0, 4); // Show first 4
+            
+            featured.forEach(product => {
+                const card = createProductCard(product);
+                featuredGrid.appendChild(card);
+            });
+            
+            updateAuthLink();
+            updateCartCount();
+
+            // Newsletter form handling
+            const newsletterForm = document.getElementById('newsletter-form');
+            if (newsletterForm) {
+                newsletterForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    showNotification('Thank you for subscribing to the Chix Club!');
+                    newsletterForm.reset();
+                });
+            }
+        });
+    </script>
+</body>
+</html>

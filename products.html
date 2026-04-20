@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - Anggelicious Chix</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="images/logo.png" alt="Anggelicious Chix Logo" class="logo">
+            <div class="business-info">
+                <h1>Anggelicious Chix</h1>
+                <p>Don't be a chicken, taste the chix.</p>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="products.html">PRODUCTS</a></li>
+                <li><a href="cart.html" class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cart-count">0</span>
+                </a></li>
+                <li><a href="orders.html">ORDERS</a></li>
+                <li><a href="login.html" id="auth-link" class="auth-btn">MEMBER LOGIN</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="products-container">
+            <h2 class="section-title">Our Menu</h2>
+            
+            <div class="products-grid" id="all-products-grid">
+                <!-- All 15-20 products will be loaded here via JS -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-info">
+            <p><strong>Anggelicious Chix</strong></p>
+            <p>Email: <a href="mailto:rangge716@gmail.com" style="color: white;">rangge716@gmail.com</a></p>
+            <p>&copy; 2026 Anggelicious Chix. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div id="notification"></div>
+
+    <script src="cart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const productsGrid = document.getElementById('all-products-grid');
+            
+            products.forEach(product => {
+                const card = createProductCard(product);
+                productsGrid.appendChild(card);
+            });
+            
+            updateAuthLink();
+            updateCartCount();
+        });
+    </script>
+</body>
+</html>

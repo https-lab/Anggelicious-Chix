@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - Anggelicious Chix</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="images/logo.png" alt="Anggelicious Chix Logo" class="logo">
+            <div class="business-info">
+                <h1>Anggelicious Chix</h1>
+                <p>Don't be a chicken, taste the chix.</p>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="products.html">PRODUCTS</a></li>
+                <li><a href="cart.html" class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cart-count">0</span>
+                </a></li>
+                <li><a href="orders.html">ORDERS</a></li>
+                <li><a href="login.html" id="auth-link" class="auth-btn">MEMBER LOGIN</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="cart-container">
+            <h2 class="section-title">Your Cart</h2>
+            <div id="cart-items">
+                <!-- Cart items will be loaded here via JS -->
+            </div>
+            <div id="cart-empty" style="display: none; text-align: center; margin: 2rem;">
+                <p>Your cart is empty.</p>
+                <a href="products.html" class="cta-btn" style="display: inline-block; margin-top: 1rem;">Go Shopping</a>
+            </div>
+            <div id="cart-summary" style="display: none;">
+                <div class="cart-total">Total: ₱<span id="total-amount">0.00</span></div>
+                <button onclick="processCheckout()" class="checkout-btn">CHECKOUT NOW</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-info">
+            <p><strong>Anggelicious Chix</strong></p>
+            <p>Email: <a href="mailto:rangge716@gmail.com" style="color: white;">rangge716@gmail.com</a></p>
+            <p>&copy; 2026 Anggelicious Chix. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div id="notification"></div>
+
+    <script src="cart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCart();
+            updateAuthLink();
+            updateCartCount();
+        });
+
+        function renderCart() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartEmpty = document.getElementById('cart-empty');
+            const cartSummary = document.getElementById('cart-summary');
+            const totalAmountSpan = document.getElementById('total-amount');
+            
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '';
+                cartEmpty.style.display = 'block';
+                cartSummary.style.display = 'none';
+                return;
+            }
+            
+            cartEmpty.style.display = 'none';
+            cartSummary.style.display = 'block';
+            cartItemsContainer.innerHTML = '';
+            
+            let total = 0;
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                const itemElement = document.createElement('div');
+                itemElement.className = 'cart-item';
+                itemElement.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}">
+                    <div class="cart-item-info">
+                        <h3>${item.name}</h3>
+                        <p>₱${item.price.toFixed(2)} each</p>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="qty-btn" onclick="updateQuantity(${index}, -1)"><i class="fas fa-minus"></i></button>
+                        <span class="qty-val">${item.quantity}</span>
+                        <button class="qty-btn" onclick="updateQuantity(${index}, 1)"><i class="fas fa-plus"></i></button>
+                    </div>
+                    <div style="font-weight: bold; min-width: 80px; text-align: right;">
+                        ₱${itemTotal.toFixed(2)}
+                    </div>
+                    <button class="remove-btn" onclick="removeFromCart(${index})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                `;
+                cartItemsContainer.appendChild(itemElement);
+            });
+            
+            totalAmountSpan.textContent = total.toFixed(2);
+        }
+
+        function updateQuantity(index, change) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            if (cart[index]) {
+                cart[index].quantity += change;
+                if (cart[index].quantity <= 0) {
+                    cart.splice(index, 1);
+                }
+                localStorage.setItem('cart', JSON.stringify(cart));
+                renderCart();
+                updateCartCount();
+            }
+        }
+
+        function removeFromCart(index) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            renderCart();
+            updateCartCount();
+            showNotification('Item removed from cart.');
+        }
+
+        function processCheckout() {
+            if (!localStorage.getItem('isLoggedIn')) {
+                showNotification('Please login first to checkout.');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 1500);
+                return;
+            }
+            
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            
+            const newOrder = {
+                id: Date.now(),
+                date: new Date().toLocaleDateString(),
+                items: cart,
+                total: cart.reduce((sum, item) => sum + item.price, 0)
+            };
+            
+            orders.push(newOrder);
+            localStorage.setItem('orders', JSON.stringify(orders));
+            localStorage.removeItem('cart');
+            
+            window.location.href = 'thankyou.html';
+        }
+    </script>
+</body>
+</html>

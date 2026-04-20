@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History - Anggelicious Chix</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="images/logo.png" alt="Anggelicious Chix Logo" class="logo">
+            <div class="business-info">
+                <h1>Anggelicious Chix</h1>
+                <p>Don't be a chicken, taste the chix.</p>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="products.html">PRODUCTS</a></li>
+                <li><a href="cart.html" class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cart-count">0</span>
+                </a></li>
+                <li><a href="orders.html">ORDERS</a></li>
+                <li><a href="login.html" id="auth-link" class="auth-btn">MEMBER LOGIN</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="cart-container">
+            <h2 class="section-title">Order History</h2>
+            <div id="orders-list">
+                <!-- Orders will be loaded here via JS -->
+            </div>
+            <div id="no-orders" style="display: none; text-align: center; margin: 2rem;">
+                <p>You haven't placed any orders yet.</p>
+                <a href="products.html" class="cta-btn" style="display: inline-block; margin-top: 1rem;">Order Now</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-info">
+            <p><strong>Anggelicious Chix</strong></p>
+            <p>Email: <a href="mailto:rangge716@gmail.com" style="color: white;">rangge716@gmail.com</a></p>
+            <p>&copy; 2026 Anggelicious Chix. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div id="notification"></div>
+
+    <script src="cart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!localStorage.getItem('isLoggedIn')) {
+                showNotification('Please login to view your order history.');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 1500);
+                return;
+            }
+            
+            renderOrders();
+            updateAuthLink();
+            updateCartCount();
+        });
+
+        function renderOrders() {
+            const ordersList = document.getElementById('orders-list');
+            const noOrders = document.getElementById('no-orders');
+            
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            
+            if (orders.length === 0) {
+                noOrders.style.display = 'block';
+                return;
+            }
+            
+            ordersList.innerHTML = '';
+            orders.reverse().forEach(order => {
+                const orderElement = document.createElement('div');
+                orderElement.className = 'cart-item'; // Reusing style
+                orderElement.style.flexDirection = 'column';
+                orderElement.style.alignItems = 'flex-start';
+                
+                let itemsHtml = order.items.map(item => `<li>${item.name} - ₱${item.price.toFixed(2)}</li>`).join('');
+                
+                orderElement.innerHTML = `
+                    <div style="width: 100%; display: flex; justify-content: space-between; border-bottom: 1px solid #ddd; padding-bottom: 0.5rem; margin-bottom: 0.5rem;">
+                        <strong>Order #${order.id}</strong>
+                        <span>${order.date}</span>
+                    </div>
+                    <ul style="list-style: none; padding-left: 0; width: 100%;">
+                        ${itemsHtml}
+                    </ul>
+                    <div style="width: 100%; text-align: right; margin-top: 0.5rem; font-weight: bold;">
+                        Total Paid: ₱${order.total.toFixed(2)}
+                    </div>
+                `;
+                ordersList.appendChild(orderElement);
+            });
+        }
+    </script>
+</body>
+</html>
