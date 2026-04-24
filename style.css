@@ -33,10 +33,17 @@ header {
     box-shadow: var(--shadow);
 }
 
+.mobile-header-actions {
+    display: none;
+    align-items: center;
+    gap: 0.8rem;
+}
+
 .logo-container {
     display: flex;
     align-items: center;
     gap: 1rem;
+    min-width: 0;
 }
 
 .logo {
@@ -60,6 +67,10 @@ nav ul {
     list-style: none;
     gap: 1.5rem;
     align-items: center;
+}
+
+nav ul li:last-child .cart-icon {
+    margin-left: auto;
 }
 
 nav a {
@@ -95,6 +106,28 @@ nav a:hover {
     font-size: 0.7rem;
     padding: 2px 6px;
     border-radius: 50%;
+}
+
+.menu-toggle {
+    display: none;
+    width: 42px;
+    height: 42px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: var(--white);
+    cursor: pointer;
+    padding: 8px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.menu-toggle span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--dark-brown);
 }
 
 /* Hero Section */
@@ -150,8 +183,8 @@ nav a:hover {
 
 .products-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.5rem;
 }
 
 .product-card {
@@ -160,6 +193,8 @@ nav a:hover {
     overflow: hidden;
     box-shadow: var(--shadow);
     transition: var(--transition);
+    display: flex;
+    flex-direction: column;
 }
 
 .product-card:hover {
@@ -168,12 +203,17 @@ nav a:hover {
 
 .product-image {
     width: 100%;
-    height: 200px;
+    aspect-ratio: 1 / 1;
     object-fit: cover;
+    cursor: pointer;
 }
 
 .product-info {
     padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    flex: 1;
 }
 
 .product-name {
@@ -197,6 +237,16 @@ nav a:hover {
     cursor: pointer;
     border-radius: 5px;
     transition: var(--transition);
+}
+
+.product-qty-controls {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    background: #f0f0f0;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    width: fit-content;
 }
 
 .add-to-cart:hover {
@@ -337,26 +387,187 @@ nav a:hover {
     box-shadow: var(--shadow);
 }
 
+.image-preview-modal {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 3000;
+}
+
+.image-preview-modal.is-open {
+    display: flex;
+}
+
+.image-preview-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.image-preview-content {
+    position: relative;
+    background: var(--white);
+    border-radius: 12px;
+    padding: 1rem 1rem 0.8rem;
+    max-width: 92vw;
+    width: 480px;
+    text-align: center;
+    z-index: 1;
+}
+
+.image-preview-content img {
+    width: 100%;
+    max-height: 70vh;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+#image-preview-name {
+    margin-top: 0.7rem;
+    font-weight: 600;
+}
+
+.image-preview-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    margin-top: 0.8rem;
+}
+
+.image-preview-actions .add-to-cart {
+    max-width: 240px;
+}
+
+.image-preview-close {
+    position: absolute;
+    top: 0.4rem;
+    right: 0.7rem;
+    border: none;
+    background: transparent;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: var(--dark-brown);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     header {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
+        gap: 0.5rem;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .logo {
+        width: 50px;
+        height: 50px;
+    }
+
+    .business-info h1 {
+        font-size: 1.05rem;
+        line-height: 1.1;
+    }
+
+    .business-info p {
+        font-size: 0.7rem;
+    }
+
+    .mobile-header-actions {
+        display: flex;
+        margin-left: auto;
+        flex-shrink: 0;
+    }
+
+    .menu-toggle {
+        display: inline-flex;
+    }
+
+    nav {
+        width: 100%;
+        order: 3;
+        flex: 0 0 100%;
+    }
+
+    .logo-container {
+        flex: 1 1 auto;
+        min-width: 0;
     }
 
     nav ul {
-        flex-wrap: wrap;
+        display: none;
+        margin-top: 0.5rem;
+        padding: 0.75rem;
+        border-radius: 10px;
+        background: #f7f3ea;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.25rem;
+    }
+
+    nav.mobile-open ul {
+        display: flex;
+    }
+
+    nav ul li a {
+        display: block;
+        padding: 0.6rem 0.5rem;
+        border-radius: 6px;
+        text-align: left;
+    }
+
+    nav ul li a:hover {
+        background: #ece2cf;
+    }
+
+    nav ul .cart-icon {
+        display: none;
+    }
+
+    .mobile-cart-shortcut {
+        display: inline-flex;
+        align-items: center;
         justify-content: center;
+        width: 42px;
+        height: 42px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background: var(--white);
+        font-size: 1.1rem;
+    }
+
+    .products-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 1rem;
+    }
+
+    .product-info {
+        padding: 1rem;
+    }
+
+    .cart-item {
+        flex-wrap: wrap;
+        gap: 0.8rem;
+    }
+
+    .cart-item img {
+        width: 64px;
+        height: 64px;
+    }
+
+    .quantity-controls {
+        order: 3;
     }
 
     .hero h2 {
         font-size: 2rem;
     }
+}
 
+@media (max-width: 1024px) and (min-width: 769px) {
     .products-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 }
 
